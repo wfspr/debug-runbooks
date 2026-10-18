@@ -155,7 +155,16 @@ The following references are documented only to distinguish observed selections 
 | `openrouter/xingchen-agi/xing4.0-29b-a4b:free` | OmniRoute | Logs show HTTP 504 execution-expiration failures |
 | `/new` | local-20138 | Invalid persisted override; repeated HTTP 400 failures |
 
-Exact identities of the ChatGPT and Hermes subagent models used during the investigation were not consistently recoverable and are intentionally not inferred.
+### Subsequent documentation workflow (not the WhatsApp repair)
+
+The later October 18 runbook-creation workflow is separate from the October 17–18 WhatsApp recovery attempts. Its local Hermes Desktop evidence records:
+
+- **OpenCode Zen failure:** model `mimo-v2.6-flash-free`, provider `opencode-zen`, HTTP 403. The reported reason was: `OpenCode's free tier can only be used from within OpenCode.` The requested documentation turn was not processed on that attempt.
+- **Hermes documentation-session model metadata:** `gpt-5.6-luna`. This identifies the model metadata for the later Hermes Desktop documentation session, not the model that fixed WhatsApp. The execution log separately records the runtime label `gpt-5.6-luna-900k` and `provider=openai-codex`; neither detail is inferred from the visible model-picker label. No provider is assigned to the base `gpt-5.6-luna` metadata beyond that explicit runtime log evidence.
+
+These documentation-session model records do not show participation in repairing the WhatsApp session. The `/reset` action remains the only user-confirmed WhatsApp fix.
+
+Exact identities of other ChatGPT and Hermes subagent models used during the original investigation were not consistently recoverable and are intentionally not inferred.
 
 ---
 
@@ -244,9 +253,9 @@ The documentation review checked the new runbook and staged diff for:
 - Accidental inclusion of repair scripts or backups
 - Unrelated configuration, permission, or credential changes
 
-No such material was included. Relevant scratch and backup artifacts were checked for existence only; scripts were not executed, backups were not deleted, and the live Hermes installation/session store was not modified by this documentation task.
+The security checks in this correction are limited to the documentation change: review of the target Markdown, the staged diff, relative links, whitespace, and targeted credential-pattern checks. Existing repository validation was also run separately.
 
-Repository-specific Markdown/whitespace validation was run. The repository did not expose a dedicated secret scanner in the inspected documentation workflow, so no claim of a separate secret-scanner pass is made.
+These checks are **not** a comprehensive security audit of the live Hermes installation. No full live-system security audit or credential audit was performed or established by this documentation task. The live Hermes installation, gateway, WhatsApp session, configuration, and state database were not modified.
 
 ---
 
