@@ -82,6 +82,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-10-18</td>
+      <td><a href="macos/hermes-whatsapp-invalid-model-override-reset-recovery-2026-10-18.md">Hermes WhatsApp invalid model override recovery — `/new` persisted as an invalid model override, extended Desktop/CLI/TUI and SQLite/JSON investigation did not resolve it, and the user-confirmed fix was sending `/reset` directly in WhatsApp</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-10-03</td>
       <td><a href="macos/9router-v0.5.95-launchagent-policy-guard-port-hijack-2026-10-03.md">9Router v0.5.95 LaunchAgent Recovery — Policy Guard Port Hijack on 20138 — stale <code>ai.f0d.policyguard</code> launchd job held <code>127.0.0.1:20138</code> and respawned on kill, blocking the new 9Router build; recovered with a clean single-owner <code>ai.9router.local</code> LaunchAgent and verified <code>/dashboard</code> 307 → <code>/login</code></a></td>
       <td style="white-space: nowrap;">Fixed / Verified</td>
