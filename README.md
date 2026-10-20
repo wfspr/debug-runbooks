@@ -314,6 +314,11 @@ The shortest reliable diagnostic and recovery procedure.
   <tbody>
     <tr>
       <td style="white-space: nowrap;">2026-10-21</td>
+      <td><a href="windows/2026-10-21-codex-desktop-ollama-restore-openai-catalog.md">Codex desktop and Ollama restoration recovered native OpenAI models — removed an unsupported legacy profile, then restored the native model selector with <code>ollama launch codex-app --restore</code> after closing both desktop apps; service health and request routing remain unverified</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
+      <td style="white-space: nowrap;">2026-10-21</td>
       <td><a href="windows/2026-10-21-omniroute-npm-ebusy-pm2-update-recovery.md">OmniRoute npm <code>EBUSY</code> upgrade failure under PM2 — <code>npm install -g omniroute@3.8.52</code> could not rename the install directory while OmniRoute was running as a PM2-managed process; fixed by stopping the managed process before the upgrade, then restarting and saving the process list</a></td>
       <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
     </tr>
