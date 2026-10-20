@@ -2,9 +2,11 @@
 
 Review date: 2026-10-21. Baseline: `0056f1a` on `wfspr/debug-runbooks`.
 
+During the review, `main` advanced to `5a3902a`, adding the Codex/Ollama restoration runbook. That commit was merged into this branch and retained in full; final validation includes the resulting 49-runbook collection. The file summary below describes this PR's 28 changed files relative to the updated base.
+
 ## Scope and evidence
 
-The review covered repository structure, contributor/agent guidance, all 48 runbooks' discovery/index metadata and high-risk command patterns, platform indexes, the template, example configuration artifacts, and the website's content/privacy pipeline. Detailed procedure corrections focused on permissions, PM2, Hermes/Git cache diagnostics, Vercel eligibility probes, Composio installation, launcher upgrades, and launchd process ownership.
+The review covered repository structure, contributor/agent guidance, all 49 runbooks' discovery/index metadata and high-risk command patterns, platform indexes, the template, example configuration artifacts, and the website's content/privacy pipeline. Detailed procedure corrections focused on permissions, PM2, Hermes/Git cache diagnostics, Vercel eligibility probes, Composio installation, launcher upgrades, and launchd process ownership.
 
 This was a source/documentation review in a Linux cloud environment with Node.js 24.19.0. It did not rerun incidents on the original macOS or Windows machines, exercise paid/provider APIs, rotate remote credentials, or deploy the website. Historical observations, dates, filenames, and routes remain intact. Unsupported conclusions are qualified rather than promoted to new verification results.
 
@@ -28,14 +30,14 @@ The existing website detector scans published runbooks and output, but publicati
 
 - Baseline: 102 tests passed before edits.
 - Updated suite: 109 tests passed, including raw-source scope, secret-safe diagnostics, fence balance, symlink rejection, all-runbook indexing, and repository-link coverage.
-- `npm run check:docs`: no known-format credential matches or unclosed fences in the scoped current source files.
-- `npm run check:content`: all 48 runbooks remain published and are now indexed; status wording is recognized.
+- `npm run check:docs`: no known-format credential matches or unclosed fences in 64 scoped current source files.
+- `npm run check:content`: all 49 runbooks remain published and are now indexed; status wording is recognized.
 - `npm run check`: no type errors, warnings, or hints.
-- `npm run build`: 53 pages built with `SITE_URL` unset; the output scan passed across 57 text assets.
-- A second build with the production `SITE_URL` also passed: 53 pages and 59 scanned text assets, including sitemap output.
+- `npm run build`: 54 pages built with `SITE_URL` unset; the output scan passed across 58 text assets.
+- A second build with the production `SITE_URL` also passed: 54 pages and 60 scanned text assets, including sitemap output.
 - Isolated snippet checks: 25 Bash blocks passed `bash -n`; permission JSON examples parsed; the PM2 ecosystem JavaScript parsed and preserved a Windows dotenv path with spaces as one argument; Node loaded a synthetic dotenv file with spaces in its filename; an isolated Git fixture confirmed upstream-only versus local-only divergence counts.
 - `git diff --check`: passed.
-- Local file-link check: 115 relative Markdown/HTML file links resolve; fragments and remote URLs were not checked.
+- Local file-link check: 117 relative Markdown/HTML file links resolve; fragments and remote URLs were not checked.
 - A known-format credential scan of available historical documentation diffs found no matches. This does not establish the absence of arbitrary credentials, binary evidence, or history no longer present locally.
 
 These syntax/fixture checks do not validate the original services, PM2's Windows startup integration, current provider eligibility, or the contents of a changing remote installer. The CI workflow uses the Node 22 line declared in `.nvmrc`; GitHub-hosted execution occurs after the PR is opened.
