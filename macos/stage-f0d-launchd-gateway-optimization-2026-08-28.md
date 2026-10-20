@@ -10,6 +10,9 @@
 
 ## 1. Summary
 
+> [!WARNING]
+> This is the August topology. The [October 3 recovery](9router-v0.5.95-launchagent-policy-guard-port-hijack-2026-10-03.md) later removed the stale policy guard in favor of a single 9Router owner. Do not replay this restart recipe on that newer topology. The broad `pkill -f policy-proxy.mjs` commands below are retained incident history; on a matching legacy installation, identify the actual launchd job and PID before a targeted restart so unrelated proxies stay running.
+
 Attempted to deploy an optimized version of `policy-proxy.mjs` (with LRU caching, Trie prefix matching, verdict caching, and HTTP connection pooling inspired by DFlash 2) to replace the unoptimized gateway running on port 20138. The deployment failed with `EADDRINUSE` because macOS `launchd` daemon (`ai.f0d.policyguard`) had the original version registered with `KeepAlive: true`, keeping it bound to the port indefinitely. Manual process termination and restart attempts failed because `launchd` immediately respawned the old binary. Solution: in-place file swap—back up the original, replace `policy-proxy.mjs` with the optimized code, send `SIGTERM` to the active process, and let `launchd` restart automatically with the new executable. The optimized gateway deployed successfully, achieving 99.8% cache hit rate (2,005 hits / 2,007 requests) and 75–85 req/sec throughput under load.
 
 ---

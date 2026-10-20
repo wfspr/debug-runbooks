@@ -359,22 +359,25 @@ v0.5.1 hardens installation against this mistake:
 Recommended upgrade pattern:
 
 ```bash
-cd ~/Downloads
-rm -rf universal-ai-launcher-v0.5.1
-mkdir universal-ai-launcher-v0.5.1
-cd universal-ai-launcher-v0.5.1
-unzip ../universal-ai-launcher-v0.5.1.zip
-cd universal-ai-launcher
+(
+  set -eu
+  cd "$HOME/Downloads"
+  launcher_stage=$(mktemp -d "$PWD/universal-ai-launcher-v0.5.1.XXXXXX")
+  unzip universal-ai-launcher-v0.5.1.zip -d "$launcher_stage"
+  cd "$launcher_stage/universal-ai-launcher"
 
-./install.sh
-rehash
+  ./install.sh
+  hash -r
 
-ai --version
-ai -h | grep guard
-ai guard install
-ai guard status
-ai guard verify
+  ai --version
+  ai -h | grep guard
+  ai guard install
+  ai guard status
+  ai guard verify
+)
 ```
+
+Use a trusted, reviewed archive. This creates a fresh extraction directory and preserves any earlier `universal-ai-launcher-v0.5.1` folder; the previous unconditional recursive deletion was unnecessary. `hash -r` refreshes Bash's command cache (the former `rehash` is a zsh command). Retain the extraction and existing installation backup until the checks complete.
 
 Expected launcher version:
 

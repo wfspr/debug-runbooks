@@ -27,6 +27,7 @@ Preview Markdown in your editor or on GitHub before submitting.
 - Name files by platform, topic, and date, for example `macos/kimi-recovery-2026-08-25.md` or `windows/2026-08-23-pm2-setup.md`.
 - Keep titles concise and outcome-oriented. Use sentence case for headings.
 - Keep commands copyable, but include only those needed for diagnosis, repair, or verification.
+- Follow [CONTRIBUTING.md](CONTRIBUTING.md) for safe command scope, credential handling, evidence limits, and the complete validation sequence.
 
 ## Testing Guidelines
 
@@ -61,6 +62,7 @@ The Astro site reads runbooks directly from the platform folders; runbook Markdo
 ```bash
 cd site
 npm ci
+npm run check:docs     # raw Markdown/artifact secrets and unclosed fences, even if unpublished
 npm run check:content  # derived metadata per runbook, with sources and warnings
 npm test               # vitest: pipeline, privacy, activity, brand/contrast guards
 npm run check          # astro check (types)

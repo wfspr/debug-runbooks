@@ -37,8 +37,6 @@ Describe what originally went wrong.
 Include exact error messages where useful.
 
 ```text
-</> Bash
-
 Example error
 ```
 
@@ -76,9 +74,9 @@ Explain why this fixes the underlying problem rather than only suppressing the s
 
 Consolidate the useful commands into the shortest clean sequence.
 
-```
-</> Bash
+State the shell, working directory, prerequisites, and exact targets. Back up configuration before edits; explain rollback and any interruption. Mark historical failed or unsafe commands so readers do not mistake them for recovery steps. Use placeholders for secrets and private identifiers; do not dump environment or credential files.
 
+```bash
 # commands
 ```
 
@@ -88,15 +86,15 @@ Consolidate the useful commands into the shortest clean sequence.
 
 Document how the fix was proven.
 
-```
-</> Bash
+Separate recorded results from proposed or unrun checks. Include functional behavior, authentication, and persistence checks where relevant; a listening port alone is insufficient.
 
+```bash
 # verification commands
 ```
 
 Expected result:
 
-```
+```text
 expected output
 ```
 
@@ -122,15 +120,15 @@ Examples:
 
 Anything that can be removed or cleaned up later without affecting the working solution.
 
+List exact cleanup targets, why they are safe to remove, and how to recover them. Do not clear diagnostic logs or delete backups before verification is complete.
+
 ---
 
 ## 11. If This Happens Again
 
 Provide the shortest diagnostic sequence first.
 
-```
-</> Bash
-
+```bash
 # minimal diagnostics
 ```
 

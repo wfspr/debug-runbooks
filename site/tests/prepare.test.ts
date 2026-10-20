@@ -23,7 +23,7 @@ describe("prepareMarkdown", () => {
     const md = "# T\n\nSee [b](b.md#x), [readme](../README.md) and [web](https://example.com).\n\n```\n[b](b.md)\n```\n";
     const out = prepareMarkdown(md, { repoPath: "macos/a.md", routeFor, headerLines: [] });
     expect(out).toContain("[b](/runbooks/b/#x)");
-    expect(out).toContain("[readme](https://github.com/wafisupri/debug-runbooks/blob/main/README.md)");
+    expect(out).toContain("[readme](https://github.com/wfspr/debug-runbooks/blob/main/README.md)");
     expect(out).toContain("[web](https://example.com)");
     expect(out).toContain("```\n[b](b.md)\n```");
   });

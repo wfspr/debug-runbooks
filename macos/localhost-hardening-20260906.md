@@ -2,6 +2,13 @@
 
 **Date**: 2026-09-06
 
+**Status:** Partial — listener audit recorded; reboot verification pending
+
+**Platform:** macOS
+
+> [!NOTE]
+> This is the September 6 observation, not a current inventory. The [September 7 follow-up](macos-localhost-ai-service-hardening-2026-09-07.md) identifies port 3002 and records a credential-inheritance finding; the [September 10 follow-up](localhost-ai-service-hardening-security-cleanup-macos-2026-09-10.md) records further cleanup and remaining credential work.
+
 ## Objective
 Harden persistent localhost AI services on macOS to bind only to 127.0.0.1 (loopback) instead of 0.0.0.0 (*) while preserving working reboot-survival setup.
 
@@ -52,11 +59,11 @@ No configuration files needed modification as all services were already bound to
 
 ## Credential Hardening
 - No global CODEX_OMNIROUTE_API_KEY environment variable found in current session
-- No credential rotation required
+- The session found no global binding; that check alone cannot establish that credentials are absent from launchd, files, logs, or other processes, or that rotation is unnecessary. See the later findings linked above.
 
 ## Verification Commands
 - `lsof -nP -iTCP -sTCP:LISTEN` - shows all services listening on 127.0.0.1
-- `ps aux` - shows process ownership
+- `ps -o pid,ppid,user,comm -p <PID>` - inspect a listener's identified PID without dumping every process's full arguments, which may contain credentials
 - `launchctl list` - shows launchd management
 
 ## Reboot Survival Test

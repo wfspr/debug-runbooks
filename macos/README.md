@@ -8,10 +8,13 @@ The [root README](../README.md#macos) contains the complete dated macOS index.
 | --- | --- | --- |
 | 2026-10-18 | [Hermes WhatsApp invalid model override recovery with `/reset`](hermes-whatsapp-invalid-model-override-reset-recovery-2026-10-18.md) | Fixed / Verified |
 | 2026-09-30 | [Hermes Agent Resend Plugin Integration](hermes-resend-plugin-integration-2026-09-30.md) | Completed |
+| 2026-09-29 | [Hermes Agent stale source-check cache recovery](hermes-update-stale-warning-2026-09-29.md) | Reported resolved; Git comparison evidence remains inconsistent |
 | 2026-09-27 | [Hermes Agent partial-clone updater and WhatsApp autostash recovery](hermes-agent-partial-clone-autostash-whatsapp-recovery-2026-09-27.md) | Fixed |
 | 2026-09-26 | [Hermes Agent v0.20 You.com MCP OAuth and Portable/Plugin Resolution](hermes-you-mcp-oauth-portable-plugin-conflict-2026-09-26.md) | Fixed |
 
 The 2026-09-27 runbook covers the Hermes partial/promisor-clone updater failure, guarded no-lazy-fetch diagnostics, orphaned updater autostash triage, and a regression-tested local port of missing WhatsApp inbound deduplication and stale self-chat replay protection.
+
+The 2026-09-29 record now distinguishes remote-head GitHub comparison counts from local Git divergence. Fetching alone does not update local HEAD; the later equal-SHA claim remains unreconciled. Recovery exits only the affected interactive CLI and inspects a single installation's cache.
 
 This runbook covers Hermes Agent v0.20 You.com MCP integration (`you`, `you-research`, `you-finance`), resolving the conflict between portable/plugin definitions and native `mcp_servers` configuration, OAuth PKCE flow authorization, top-level `enabled: false` flag resolution, misleading `/reload-mcp` status messages, expected conflict warnings, remaining TUI status display anomaly, and successful registration of 27 tools across 4 MCP servers.
 
@@ -21,10 +24,22 @@ This runbook covers Hermes Agent v0.20 You.com MCP integration (`you`, `you-rese
 | --- | --- | --- |
 | 2026-09-10 | [macOS localhost AI-service hardening and security cleanup](localhost-ai-service-hardening-security-cleanup-macos-2026-09-10.md) | Completed; credential rotation and launchd inheritance follow-up remain |
 | 2026-09-07 | [macOS Localhost AI Service Hardening](macos-localhost-ai-service-hardening-2026-09-07.md) | Fixed / Verified |
+| 2026-09-06 | [Initial persistent localhost listener audit](localhost-hardening-20260906.md) | Partial — listener audit recorded; reboot verification pending |
+| 2026-09-01 | [CLI Environment and Keychain Hardening](cli-environment-keychain-hardening-2026-09-01.md) | PASS WITH ACCEPTED EXCEPTIONS |
 
 This runbook records loopback binding for FreeLLM, FCC, and OmniRoute, persistent startup ownership, OpenClaw shared-store SecretRef cleanup, safe read-only verification, and unresolved credential-hygiene recommendations.
 
 The 2026-09-07 hardening runbook documents the verified current state (FreeLLM :3001, FreeLLM custom :3002, FCC :8082, OmniRoute :20128 all localhost-only), the persistent LaunchAgent architecture (ai.fcc.server, ai.freellm.gateway, ai.freellm.gateway-3002, ai.9router.backend, ai.omniroute.gateway, ai.omniroute.openrouter-free-sync, ai.f0d.policyguard, ai.openclaw.gateway, ai.groq-kimi.compat), the port 3002 ownership discovery, FreeLLM source-patch technical debt (server.ts modified from 0.0.0.0 to 127.0.0.1), the CODEX_OMNIROUTE_API_KEY launchd inheritance security finding requiring user rotation, and the read-only final QA across 12 ports.
+
+The September 6 audit is an earlier snapshot, not evidence that credentials never needed rotation or that reboot persistence passed. Read the September 7 and September 10 findings before reusing it.
+
+## Permission and model-access corrections
+
+| Date | Runbook | Review note |
+| --- | --- | --- |
+| 2026-08-22 | [Global Claude Code permissions](claude-code-permissions-setup-2026-08-22.md) | Historical broad grants retained with a warning; recovery preserves unrelated settings |
+| 2026-08-22 | [OpenCode and Vercel AI Gateway](opencode-vercel-ai-gateway-setup-2026-08-22.md) | Connection verified; model eligibility labels remain provisional |
+| 2026-08-29 | [Asymmetric combo timeout handover](omniroute-asymmetric-combo-timeouts-2026-08-29.md) | Retained handover notes; read the subsequent matcher-hardening runbook before reuse |
 
 ## 9Router gateway recovery
 
@@ -34,6 +49,8 @@ The 2026-09-07 hardening runbook documents the verified current state (FreeLLM :
 | 2026-09-05 | [9Router v0.5.65 Policy Guard Persistence Hardening](9router-v0.5.65-policy-guard-persistence-hardening-2026-09-05.md) | Fixed / Verified |
 
 The 2026-10-03 runbook covers the stale `ai.f0d.policyguard` launchd job hijacking `127.0.0.1:20138` (respawn-on-kill), the resulting `EADDRINUSE` loop and stale dashboard version, the noisy Apple Silicon tray warning, removal of the legacy guard owner, and a clean single-owner `ai.9router.local` LaunchAgent with read-only end-state verification. The 2026-09-05 runbook covers the original policy-guard topology (`:20138` fronting the `:20139` backend) and the vendor autostart/tray limitations on this host.
+
+The October recovery now avoids broad proxy-process kill patterns. The earlier [Stage F0D optimization](stage-f0d-launchd-gateway-optimization-2026-08-28.md) remains as incident history with a warning about the later ownership change.
 
 ## OpenClaw version, runtime, and Gateway recovery
 
@@ -68,3 +85,7 @@ The migration runbook covers env-backed provider recovery, Keychain/login-shell 
 The integration runbook documents routing two persistent messaging gateways through the local FCC service: registering FCC as an Anthropic Messages provider in OpenClaw (plus adding the FCC model to the model allowlist and setting it as the default), repointing the Hermes Gateway model section at `127.0.0.1:8082` with `api_mode: anthropic_messages`, and restarting both gateways. It records the central distinction between a CLI wrapper (one process) and a launchd Gateway (a service), the rendered-Markdown-in-config pitfall, the `curl | python3 - <<'PY'` stdin conflict, timestamped rollback for both systems, and the verified results `Telegram → OpenClaw → FCC ✅` and `WhatsApp → Hermes → FCC ✅`.
 
 The OMP runbook is deliberately separate and **not** a success record: OhMyPi discovers FCC models through `/v1/models` but every request fails with `404 {"detail":"Not Found"}` because its FCC provider is declared as `api: openai-completions` while FCC serves the Anthropic Messages shape (`POST /v1/messages` → 200, `POST /v1/chat/completions` → 404). It remains open, with the fix direction identified but unverified.
+
+## Earlier SDK and CLI recovery
+
+The [Hermes + Composio + GitHub incident](hermes-composio-github-session-2026-08-07.md) separates the Python SDK from the standalone CLI. Reuse guidance now preserves existing virtual environments and calls for reviewing/verifying a downloaded installer; the original installer version and digest were not retained.

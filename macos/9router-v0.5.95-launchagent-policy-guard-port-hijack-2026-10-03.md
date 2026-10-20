@@ -145,13 +145,13 @@ LABEL="ai.f0d.policyguard"
 launchctl bootout "gui/$(id -u)" "$PLIST" 2>/dev/null || true
 launchctl disable "gui/$(id -u)/$LABEL" 2>/dev/null || true
 
-pkill -TERM -f "policy-proxy.mjs|policy-guard"
+# bootout stops the selected job; do not kill every matching proxy process.
 sleep 2
 
 lsof -nP -iTCP:20138 -sTCP:LISTEN
 ```
 
-> If the search finds more than one candidate, inspect each with `plutil -p` and unload only the one whose `Label`/program actually owns `20138` — never `head -n 1` a glob of plists.
+> If the search finds more than one candidate, inspect each with `plutil -p` and unload only the one whose `Label`/program actually owns `20138` — never `head -n 1` a glob of plists. Inspect plist output locally because environment fields may contain credentials. If a listener survives `bootout`, identify its exact PID and parent before terminating that process; do not use a broad `pkill -f` pattern. Do not continue to bootstrap until the port is free.
 
 Expected (success): no output from `lsof`, meaning `20138` is free.
 
@@ -280,7 +280,7 @@ PLIST="$HOME/Library/LaunchAgents/ai.f0d.policyguard.plist"
 LABEL="ai.f0d.policyguard"
 launchctl bootout "gui/$(id -u)" "$PLIST" 2>/dev/null || true
 launchctl disable "gui/$(id -u)/$LABEL" 2>/dev/null || true
-pkill -TERM -f "policy-proxy.mjs|policy-guard"
+# If a listener remains, identify its exact PID/parent as described in §6.1.
 sleep 2
 lsof -nP -iTCP:20138 -sTCP:LISTEN   # expect no output
 ```
@@ -434,7 +434,9 @@ PLIST="$HOME/Library/LaunchAgents/ai.f0d.policyguard.plist"
 LABEL="ai.f0d.policyguard"
 launchctl bootout "gui/$(id -u)" "$PLIST" 2>/dev/null || true
 launchctl disable "gui/$(id -u)/$LABEL" 2>/dev/null || true
-pkill -TERM -f "policy-proxy.mjs|policy-guard"
+# Confirm the port is free before starting a replacement owner.
+lsof -nP -iTCP:20138 -sTCP:LISTEN
+# Stop here if a listener remains; inspect that exact PID/parent (see §6.1).
 sleep 2
 launchctl kickstart -k "gui/$(id -u)/ai.9router.local"
 curl -I http://127.0.0.1:20138/dashboard   # expect 307 -> /login
