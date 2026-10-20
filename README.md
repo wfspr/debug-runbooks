@@ -292,6 +292,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-10-21</td>
+      <td><a href="windows/2026-10-21-omniroute-npm-ebusy-pm2-update-recovery.md">OmniRoute npm <code>EBUSY</code> upgrade failure under PM2 — <code>npm install -g omniroute@3.8.52</code> could not rename the install directory while OmniRoute was running as a PM2-managed process; fixed by stopping the managed process before the upgrade, then restarting and saving the process list</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-08-23</td>
       <td><a href="windows/2026-08-23-pm2-windows-dual-router-setup.md">PM2 Windows Dual-Router Setup (OmniRoute + 9Router Port Mapping &amp; Daemonization)</a></td>
       <td style="white-space: nowrap;">Fixed</td>
