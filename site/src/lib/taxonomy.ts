@@ -78,6 +78,7 @@ export const AI_TOOLS: Array<{ label: string; pattern: RegExp }> = [
   { label: "OpenClaude", pattern: /\bOpenClaude\b/i },
   { label: "OpenCode", pattern: /\bOpenCode\b/i },
   { label: "Cursor", pattern: /\bCursor\b/ },
+  { label: "Kilo CLI", pattern: /\bKilo CLI\b/i },
 ];
 
 export function countMentions(text: string, pattern: RegExp): number {

@@ -7,6 +7,8 @@ Scope: FREE-FIRST → PAID-FALLBACK combo latency optimisation
 
 ## Objective
 
+This file retains the original handover-style wording ("Document", "Include", and "State") as historical context. It is not a complete standalone installation recipe. Read the [subsequent matcher-hardening runbook](omniroute-asymmetric-timeout-hardening-2026-08-29.md) before adapting the patch; the exact premium matcher and upgrade-persistence limitations matter.
+
 Document that the original OmniRoute combo-target policy used approximately one shared 10-second timeout.
 
 Observed failure pattern:

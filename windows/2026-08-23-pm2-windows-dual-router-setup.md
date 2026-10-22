@@ -4,7 +4,10 @@
 ### Summary
 ---
 
-Configured **9Router** (port `20138`) and **OmniRoute** (port `20128`) to run concurrently as detached background services on Windows using PM2. Resolved startup exit loops caused by interactive CLI wrappers, terminal allocation popups, and missing upstream authentication configurations (`UPSTREAM_AUTH_ERROR`) when launching standalone Next.js builds. Configured persistent auto-start on Windows boot via `pm2-windows-startup`.
+Configured **9Router** (port `20138`) and **OmniRoute** (port `20128`) to run concurrently as detached background services on Windows using PM2. Resolved startup exit loops caused by interactive CLI wrappers, terminal allocation popups, and missing upstream authentication configurations (`UPSTREAM_AUTH_ERROR`) when launching standalone Next.js builds. Configured user startup integration via `pm2-windows-startup`; successful unattended boot before user login was not established.
+
+> [!WARNING]
+> The recorded ecosystem below binds `0.0.0.0`, exposing listeners on every IPv4 interface subject to firewall policy. Loopback URLs in the verification section do not prove loopback-only binding. Prefer a supported loopback setting for local-only use and inspect the actual listener after restart. The [later update audit](2026-10-21-omniroute-npm-ebusy-pm2-update-recovery.md) confirms this binding risk remained open. The edits here scope service operations and pass the dotenv path as one argument; they have not been replayed on the original Windows host.
 
 ### Environment
 ---
@@ -49,13 +52,20 @@ Configured **9Router** (port `20138`) and **OmniRoute** (port `20128`) to run co
 1. **Target Compiled Standalone Servers:** Point PM2 directly to `9router/app/custom-server.js` and `omniroute/dist/server.js`, bypassing interactive wrapper CLIs.
 2. **Inject OmniRoute `.env` via Node Flag:** Supply `--env-file` in `node_args` so `dist/server.js` loads credentials from `~/.omniroute/.env`.
 3. **Suppress Console Allocations:** Set `windowsHide: true` in the PM2 ecosystem declaration to prevent Windows console popup windows and QuickEdit freezing.
-4. **Persist State:** Use `pm2-windows-startup` and `pm2 save` to register background execution in the Windows registry across reboots.
+4. **Persist State:** Use `pm2-windows-startup` and `pm2 save` for the same Windows user and PM2 home. Its user startup registration is not proof of a machine service that runs before login. Verify the actual login/startup behavior separately.
 
 ### Commands
 ---
 
 ```powershell
-# 1. Unified PM2 Ecosystem Config
+# Inspect existing app names and keep a private backup of any existing config.
+# If this file exists, merge ONLY the two app entries; do not overwrite it.
+pm2 list
+if (Test-Path -LiteralPath "$HOME\ecosystem.config.cjs") {
+    throw 'Existing ecosystem.config.cjs: back it up and merge the app entries before continuing.'
+}
+
+# 1. New PM2 Ecosystem Config (recorded package paths; verify on this machine)
 @'
 const path = require('path');
 const os = require('os');
@@ -81,7 +91,7 @@ module.exports = {
       name: 'omniroute',
       cwd: omniRouteDir,
       script: 'dist/server.js',
-      node_args: '--max-old-space-size=8192 --env-file=' + omniRouteEnv,
+      node_args: ['--max-old-space-size=8192', '--env-file=' + omniRouteEnv],
       windowsHide: true,
       env: {
         PORT: 20128,
@@ -93,14 +103,13 @@ module.exports = {
 };
 '@ | Set-Content -Path "$HOME\ecosystem.config.cjs"
 
-# 2. Reset and start PM2 processes
-pm2 delete all
-pm2 start "$HOME\ecosystem.config.cjs"
+# 2. Start/restart only the two apps from the selected ecosystem file
+pm2 startOrRestart "$HOME\ecosystem.config.cjs" --only "9router,omniroute"
 
-# 3. Register auto-startup on Windows boot
+# 3. Register user startup integration, then save only after verification below
 npm install -g pm2-windows-startup
 pm2-startup install
-pm2 save
+# After port/functional checks: pm2 save
 ```
 
 ### Verification
@@ -116,33 +125,32 @@ Invoke-RestMethod -Uri "http://127.0.0.1:20128" -Method Get -TimeoutSec 5
 Invoke-RestMethod -Uri "http://127.0.0.1:20138" -Method Get -TimeoutSec 5
 ```
 
+Both `LocalAddress` values must be `127.0.0.1` for IPv4 loopback-only use; `0.0.0.0` means all IPv4 interfaces. A reachable root page is only an HTTP smoke check. Verify an authenticated provider request through each intended route without publishing credentials or response content. Then run `pm2 save` and verify the two apps after signing out and back in (or rebooting and logging in). Record failures or unrun checks explicitly.
+
+PM2 dumps can retain environment variables, including credentials loaded by the process manager. Protect `%USERPROFILE%\.pm2`, config backups, and logs with account-appropriate ACLs; keep them out of version control. Before changing packages or paths, retain the previous ecosystem configuration privately; restore its app entries and restart only these two apps if verification fails.
+
 ### Final Working State
 ---
 
 * **OmniRoute:** Running headless on [http://127.0.0.1:20128](http://127.0.0.1:20128) with credentials loaded from `~/.omniroute/.env`.
 * **9Router:** Running headless on [http://127.0.0.1:20138](http://127.0.0.1:20138) via `app/custom-server.js`.
-* **PM2 Registry:** `~/.pm2/dump.pm2` synchronized with active instances, launched automatically via Windows startup task.
+* **PM2 snapshot:** `~/.pm2/dump.pm2` synchronized with active instances; user startup integration registered. Verify login persistence separately; the incident did not establish unattended pre-login startup.
 
 ### Optional Cleanup
 ---
 
-```powershell
-pm2 flush
-```
+Retain logs while investigating. `pm2 flush` clears logs across managed apps and is not a routine recovery requirement. Archive only the identified app's logs after reviewing them for credentials; do not clear unrelated diagnostics.
 
 ### If This Happens Again
 ---
 
-1. Stop existing conflicting listeners:
-
-```powershell
-pm2 delete all
-```
+1. Identify the listener PIDs and corresponding PM2 app names using the verification commands. Do not stop unrelated services on the same machine.
 
 2. Verify that `ecosystem.config.cjs` points to `9router/app/custom-server.js` and `omniroute/dist/server.js` (with `--env-file`).
 3. Re-launch and re-save PM2:
 
 ```powershell
-pm2 start "$HOME\ecosystem.config.cjs"
+pm2 startOrRestart "$HOME\ecosystem.config.cjs" --only "9router,omniroute"
+# Complete the port and functional checks above before saving the process list.
 pm2 save
 ```

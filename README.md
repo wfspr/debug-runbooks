@@ -9,6 +9,12 @@ These are not raw chat transcripts. Each runbook records what failed, why it fai
 
 The goal is to preserve practical debugging knowledge so the same problem can be solved faster the next time it appears.
 
+## Using and contributing to the runbooks
+
+Runbooks describe the versions and machines recorded in each incident. Read their prerequisites, warnings, and verification limits before adapting commands to another system. Preserve local configuration and identify the affected service before changing it.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for authoring, command safety, credential handling, and local validation, and [docs/deployment.md](docs/deployment.md) for the website workflow. The [documentation review](docs/documentation-review.md) records the current audit's corrections and outstanding work. Website-only redactions do not remove information from the public GitHub sources.
+
 ## Runbook Structure
 ---
 
@@ -123,8 +129,8 @@ The shortest reliable diagnostic and recovery procedure.
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-09-29</td>
-      <td><a href="macos/hermes-update-stale-warning-2026-09-29.md">Hermes Agent "4 commits behind" Update Warning — Stale Source-Check Cache Recovery — persistent `⚠ 4 commits behind` banner despite clean local `main` up to date with `origin/main`; stale local `origin/main` ref plus 24-hour shared source-check cache (`~/.hermes/source-checks/<install_id>.json`) served a stale positive count; resolved by refreshing local ref, clearing the installation cache, and cold-restarting the CLI</a></td>
-      <td style="white-space: nowrap;">Fixed</td>
+      <td><a href="macos/hermes-update-stale-warning-2026-09-29.md">Hermes Agent "4 commits behind" Update Warning — stale-ref and cache recovery; includes base/head compare semantics, installation-specific cache checks, and a CLI-only restart</a></td>
+      <td style="white-space: nowrap;">Reported resolved; Git comparison evidence remains inconsistent</td>
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-09-26</td>
@@ -157,6 +163,16 @@ The shortest reliable diagnostic and recovery procedure.
       <td style="white-space: nowrap;">Fixed</td>
     </tr>
     <tr>
+      <td style="white-space: nowrap;">2026-09-07</td>
+      <td><a href="macos/macos-localhost-ai-service-hardening-2026-09-07.md">macOS Localhost AI Service Hardening — persistent owner inventory, port 3002 source-patch debt, and credential-inheritance follow-up</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified</td>
+    </tr>
+    <tr>
+      <td style="white-space: nowrap;">2026-09-06</td>
+      <td><a href="macos/localhost-hardening-20260906.md">macOS Persistent Localhost AI Service Hardening — initial listener audit with later follow-ups</a></td>
+      <td style="white-space: nowrap;">Partial — listener audit recorded; reboot verification pending</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-09-06</td>
       <td><a href="macos/openclaw-2026.9.1-skills-dependency-hardening-2026-09-06.md">OpenClaw 2026.9.1 Skills Dependency Hardening — resolved macOS/Homebrew/Go/npm/uv/LaunchAgent PATH dependencies, removed unwanted ClawHub tracking, retained 97 ready skills, intentionally disabled 5 unused/billing-dependent skills, and reached zero missing requirements</a></td>
       <td style="white-space: nowrap;">Fixed</td>
@@ -175,6 +191,11 @@ The shortest reliable diagnostic and recovery procedure.
       <td style="white-space: nowrap;">2026-09-02</td>
       <td><a href="macos/chatgpt-desktop-omniroute-launchd-auth-recovery-2026-09-02.md">ChatGPT Desktop + OmniRoute launchd Authentication Recovery</a></td>
       <td style="white-space: nowrap;">Fixed</td>
+    </tr>
+    <tr>
+      <td style="white-space: nowrap;">2026-09-01</td>
+      <td><a href="macos/cli-environment-keychain-hardening-2026-09-01.md">CLI Environment and Keychain Hardening — read-only audit and accepted exceptions</a></td>
+      <td style="white-space: nowrap;">PASS WITH ACCEPTED EXCEPTIONS</td>
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-08-31</td>
@@ -248,8 +269,8 @@ The shortest reliable diagnostic and recovery procedure.
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-08-22</td>
-      <td><a href="macos/opencode-vercel-ai-gateway-setup-2026-08-22.md">OpenCode + Vercel AI Gateway Setup (Free-Tier Model Labeling)</a></td>
-      <td style="white-space: nowrap;">Fixed</td>
+      <td><a href="macos/opencode-vercel-ai-gateway-setup-2026-08-22.md">OpenCode + Vercel AI Gateway Setup — historical model labels, access-probe limitations, and safe Keychain checks</a></td>
+      <td style="white-space: nowrap;">Connection verified; model eligibility labels remain provisional</td>
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-08-22</td>
@@ -258,7 +279,7 @@ The shortest reliable diagnostic and recovery procedure.
     </tr>
     <tr>
       <td style="white-space: nowrap;">2026-08-22</td>
-      <td><a href="macos/claude-code-permissions-setup-2026-08-22.md">Claude Code Permissions Setup (Global)</a></td>
+      <td><a href="macos/claude-code-permissions-setup-2026-08-22.md">Claude Code Permissions Setup (Global) — historical broad allow rules, risk warning, and configuration-preserving recovery</a></td>
       <td style="white-space: nowrap;">Fixed</td>
     </tr>
     <tr>
@@ -292,8 +313,18 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-10-21</td>
+      <td><a href="windows/2026-10-21-codex-desktop-ollama-restore-openai-catalog.md">Codex desktop and Ollama restoration recovered native OpenAI models — removed an unsupported legacy profile, then restored the native model selector with <code>ollama launch codex-app --restore</code> after closing both desktop apps; service health and request routing remain unverified</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
+      <td style="white-space: nowrap;">2026-10-21</td>
+      <td><a href="windows/2026-10-21-omniroute-npm-ebusy-pm2-update-recovery.md">OmniRoute npm <code>EBUSY</code> upgrade failure under PM2 — <code>npm install -g omniroute@3.8.52</code> could not rename the install directory while OmniRoute was running as a PM2-managed process; fixed by stopping the managed process before the upgrade, then restarting and saving the process list</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-08-23</td>
-      <td><a href="windows/2026-08-23-pm2-windows-dual-router-setup.md">PM2 Windows Dual-Router Setup (OmniRoute + 9Router Port Mapping &amp; Daemonization)</a></td>
+      <td><a href="windows/2026-08-23-pm2-windows-dual-router-setup.md">PM2 Windows Dual-Router Setup — targeted service updates, dotenv argument handling, and listener/login-startup verification</a></td>
       <td style="white-space: nowrap;">Fixed</td>
     </tr>
     <tr>
