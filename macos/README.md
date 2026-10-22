@@ -56,6 +56,7 @@ The October recovery now avoids broad proxy-process kill patterns. The earlier [
 
 | Date | Runbook | Status |
 | --- | --- | --- |
+| 2026-10-22 | [OpenClaw × Telegram × GitHub CLI execution allowlist recovery](openclaw-telegram-gh-cli-exec-allowlist-2026-10-22.md) | Fixed / Verified |
 | 2026-09-30 | [OpenClaw Update Recovery — 2026.9.6 rollout, stale triage process, and shell PATH cleanup](openclaw-update-recovery-2026-09-30.md) | Fixed / Verified; provider-model, secrets, and dead-letter cleanup remain follow-up |
 | 2026-09-27 | [OpenClaude Plugin/MCP Cleanup](openclaude-plugin-mcp-cleanup-2026-09-27.md) | Fixed |
 | 2026-09-19 | [OpenClaw 2026.9.4 Gateway, Node runtime, and OmniRoute credential recovery](openclaw-2026.9.4-gateway-node-omniroute-recovery-2026-09-19.md) | Fixed |
