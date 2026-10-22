@@ -12,6 +12,9 @@ describe("repository content", () => {
   it("contains no known-format secrets", () => {
     expect(result.secretFindings).toEqual([]);
   });
+  it("lists every published runbook in the root README index", () => {
+    expect(result.runbooks.filter((r) => !r.indexed).map((r) => r.repoPath)).toEqual([]);
+  });
   it("leaves no unredacted local home paths in published Markdown", () => {
     for (const r of result.runbooks) {
       expect(r.markdown, r.repoPath).not.toMatch(/\/Users\/wfspr\b/);

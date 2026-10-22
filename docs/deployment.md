@@ -20,6 +20,8 @@ The website in [`site/`](../site) is a fully static Astro build, served by **Clo
 2. `astro build` renders all pages. The content loader fails the build if a runbook contains a known-format secret.
 3. `scripts/scan-output.ts` scans `dist/` for known-format secrets, unredacted home paths and hostname emails, and fails the build if it finds any.
 
+Before building, run the validation sequence in [CONTRIBUTING.md](../CONTRIBUTING.md). `npm run check:docs` additionally checks raw repository documentation and text example artifacts, including files that website publication policy omits. Render-time redaction is not a confidentiality boundary for GitHub sources or repository history.
+
 ### Git history in CI
 
 The activity trace needs full git history. If the build clone is shallow, the script runs `git fetch --unshallow` (the repository is public, so no credentials are needed). If that fails, it falls back to the committed `site/src/data/activity.snapshot.json` and the page labels the data "Snapshot as of …".
@@ -28,7 +30,7 @@ Refresh the snapshot occasionally with `node scripts/build-activity.ts --snapsho
 
 ## Cloudflare setup (one-time, dashboard)
 
-1. **Workers & Pages → Create → Import a repository**, then select `wafisupri/debug-runbooks`.
+1. **Workers & Pages → Create → Import a repository**, then select `wfspr/debug-runbooks`.
 2. Set:
    - **Root directory:** `site`
    - **Build command:** `npm run build`

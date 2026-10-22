@@ -12,6 +12,9 @@
 
 Configured global Claude Code permissions in `~/.openclaude/settings.json` to allow common development commands without prompting. Added allow rules for npm, git, all bash commands, and file operations (Read/Edit/Write/Glob/Grep).
 
+> [!WARNING]
+> This records the incident's broad allowlist, not a recommended default. `Bash` grants arbitrary shell execution, and unrestricted Read/Edit/Write permits access to sensitive files reachable by the process. A personal machine still has credentials and valuable data. Prefer project-scoped, narrowly selected permissions with approvals for mutations; confirm syntax against the installed OpenClaude version. The observed absence of prompts verifies convenience, not isolation or least privilege.
+
 ---
 
 ## 2. Environment
@@ -54,6 +57,7 @@ Default OpenClaude permissions require explicit approval for each tool use. No g
 Added a `permissions.allow` array with the following rules:
 
 ```json
+{
 "permissions": {
   "allow": [
     "Bash(npm:*)",
@@ -65,6 +69,7 @@ Added a `permissions.allow` array with the following rules:
     "Glob",
     "Grep"
   ]
+}
 }
 ```
 
@@ -88,7 +93,7 @@ Added a `permissions.allow` array with the following rules:
 ### View current permissions
 
 ```bash
-cat ~/.openclaude/settings.json
+jq '{permissions: .permissions}' ~/.openclaude/settings.json
 ```
 
 ### Test permissions work
@@ -105,10 +110,12 @@ ls -la
 ## 8. Verification
 
 ```bash
-cat ~/.openclaude/settings.json
+jq '{permissions: .permissions}' ~/.openclaude/settings.json
 ```
 
 **Expected result:**
+The original file contained the following settings; the filtered command above prints only `permissions`. Do not dump the full file into logs: its `env` or other fields may contain credentials.
+
 ```json
 {
   "env": {},
@@ -157,7 +164,7 @@ git status
 
 ## 10. Optional Cleanup
 
-None needed. The permissions are intentionally broad for a personal development machine.
+Review and remove redundant or unused grants. The original unscoped `Bash` makes the npm/git rules redundant; retain only the permissions the current project needs. Record a backup and restore path before editing.
 
 ---
 
@@ -169,31 +176,20 @@ None needed. The permissions are intentionally broad for a personal development 
 cat ~/.openclaude/settings.json | jq '.permissions'
 ```
 
-### Shortest recovery
+### Configuration-preserving recovery
 
-```bash
-# Re-add permissions if lost
-cat > ~/.openclaude/settings.json << 'EOF'
-{
-  "env": {},
-  "model": "auto/best-free",
-  "effortLevel": "high",
-  "permissions": {
-    "allow": [
-      "Bash(npm:*)",
-      "Bash(git:*)",
-      "Bash",
-      "Read",
-      "Edit",
-      "Write",
-      "Glob",
-      "Grep"
-    ]
-  }
-}
-EOF
-```
+1. Inspect only the permissions object with the command above. Make a private backup of the existing settings file; restrict the backup to its owner because it may contain credentials.
+2. Use the installed CLI's permission editor, or edit just `permissions.allow` in the existing JSON. Prefer a project-scoped file when the CLI supports it. Preserve `env`, provider definitions, model selection, and every unrelated field.
+3. Validate the JSON without printing its contents:
+
+   ```bash
+   jq empty ~/.openclaude/settings.json
+   ```
+
+4. Start a fresh CLI session and check the intended command's approval behavior. Restore the backup if the CLI fails to load it. Do not restore the historical global allowlist automatically.
+
+The former whole-file heredoc replacement was removed because it truncated existing settings and could erase credentials and unrelated configuration. The historical rule set remains above for reference.
 
 ### Security note
 
-These permissions are appropriate for a personal development machine. For shared or production environments, use more restrictive rules (e.g., specific commands only, or project-scoped settings in `.openclaude/settings.json`).
+Use the minimum permissions needed on personal, shared, and production machines. These controls govern what an agent can execute; they do not make untrusted repository instructions safe to follow.

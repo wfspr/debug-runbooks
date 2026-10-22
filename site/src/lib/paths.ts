@@ -36,7 +36,7 @@ export const PLATFORMS = [
 
 export type PlatformId = (typeof PLATFORMS)[number]["id"];
 
-export const REPO_URL = "https://github.com/wafisupri/debug-runbooks";
+export const REPO_URL = "https://github.com/wfspr/debug-runbooks";
 export const REPO_BRANCH = "main";
 
 export function githubBlobUrl(repoPath: string): string {

@@ -182,14 +182,20 @@ This was exactly what happened.
 ```bash
 deactivate 2>/dev/null || true
 
-rm -rf ~/composio-venv
-
-/opt/homebrew/bin/python3.12 -m venv ~/composio-venv
-source ~/composio-venv/bin/activate
-
-python -m pip install --upgrade pip
-python -m pip install composio
+(
+  set -eu
+  # Stop instead of deleting an existing environment or following a symlink.
+  if [ -e "$HOME/composio-venv" ] || [ -L "$HOME/composio-venv" ]; then
+    printf '%s\n' 'Existing composio-venv: inspect and preserve it before choosing a new environment path.' >&2
+    exit 1
+  fi
+  /opt/homebrew/bin/python3.12 -m venv "$HOME/composio-venv"
+  "$HOME/composio-venv/bin/python" -m pip install --upgrade pip
+  "$HOME/composio-venv/bin/python" -m pip install composio
+) && source "$HOME/composio-venv/bin/activate"
 ```
+
+The original recipe deleted `~/composio-venv` unconditionally. The guarded version preserves existing environments; if the guard stops, inspect their dependencies and choose a separate path rather than deleting them. The incident did not retain exact SDK package pins, so a current install still needs the SDK import test below.
 
 ---
 
@@ -211,9 +217,21 @@ This proved the Python SDK itself was healthy.
 
 ### Step 3 — Install the current standalone Composio CLI
 
-```bash
+The incident used the following remote installer command (historical, not a blind replay instruction):
+
+```text
 curl -fsSL https://composio.dev/install | bash
 ```
+
+For reuse, download the installer to a fresh temporary directory first:
+
+```bash
+composio_stage=$(mktemp -d) &&
+curl --proto '=https' --tlsv1.2 --fail --show-error --location \
+  https://composio.dev/install -o "$composio_stage/install.sh"
+```
+
+Inspect that file, including its download destinations and changes to shell startup files. Prefer a versioned official release and validate its authoritative signature/checksum when available before execution. This record contains no pinned installer digest or release version, so it cannot attest to the contents currently served at that URL. Do not execute an unreviewed download just because HTTPS succeeded. Retain the downloaded artifact and validation evidence privately if reproducing the install.
 
 The CLI installed to:
 

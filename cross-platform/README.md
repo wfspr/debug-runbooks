@@ -7,6 +7,8 @@
 
 The Universal AI CLI Gateway Launcher adds a reversible CLI × gateway selection layer while preserving native CLI model pickers and existing gateway infrastructure.
 
+Its v0.5.1 upgrade example now extracts into a fresh temporary directory instead of deleting a previous extraction, uses Bash's `hash -r`, and stops when a prerequisite fails.
+
 The local-memory runbook covers agent amnesia across the CLI fleet (opencode, claude, openclaude, pi, Kimi Code, Antigravity, GitHub Copilot CLI) on Windows + macOS using three shared local memory MCP servers: `basic-memory`, `memory-service`, `graph-memory`.
 
 
