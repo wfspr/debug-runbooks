@@ -88,6 +88,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-10-22</td>
+      <td><a href="macos/openclaw-telegram-gh-cli-exec-allowlist-2026-10-22.md">OpenClaw × Telegram × GitHub CLI execution allowlist recovery</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-10-18</td>
       <td><a href="macos/hermes-whatsapp-invalid-model-override-reset-recovery-2026-10-18.md">Hermes WhatsApp invalid model override recovery — `/new` persisted as an invalid model override, extended Desktop/CLI/TUI and SQLite/JSON investigation did not resolve it, and the user-confirmed fix was sending `/reset` directly in WhatsApp</a></td>
       <td style="white-space: nowrap;">Fixed / Verified</td>
