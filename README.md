@@ -88,6 +88,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-10-24</td>
+      <td><a href="macos/codex-cli-homebrew-upgrade-2026-10-24.md">Codex CLI Homebrew cask upgrade — 0.160.0 to 0.164.0, completed and verified</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-10-22</td>
       <td><a href="macos/openclaw-telegram-gh-cli-exec-allowlist-2026-10-22.md">OpenClaw × Telegram × GitHub CLI execution allowlist recovery</a></td>
       <td style="white-space: nowrap;">Fixed / Verified</td>
