@@ -2,12 +2,6 @@
 
 The [root README](../README.md#macos) contains the complete dated macOS index.
 
-## Codex CLI maintenance
-
-| Date | Runbook | Status |
-| --- | --- | --- |
-| 2026-10-24 | [Codex CLI Homebrew cask upgrade — 0.160.0 to 0.164.0](codex-cli-homebrew-upgrade-2026-10-24.md) | Fixed / Verified |
-
 ## Hermes Agent and MCP integration
 
 | Date | Runbook | Status |
