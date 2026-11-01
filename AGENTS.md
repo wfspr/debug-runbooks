@@ -115,3 +115,16 @@ Interpreting results:
 - A real credential found in any commit is a stop condition: do not push further, tell the user, and do not delete the line alone. Rotate or revoke the credential first. Rewriting history needs the owner's approval.
 
 Report to the user in one short block: commit hash, scan results per rule, and anything found and left unchanged.
+
+## Editing a published runbook
+
+Any change to a runbook that already exists in the repo must leave a visible record. Add an `*EDIT*` block directly under the header block (after the Platform line), using this form:
+
+```text
+*EDIT*
+Date: - YYYY-MM-DD
+Edited what: - What changed, and why (for example, "redacted an email address after an exposure audit")
+Edited by: - Who made the change (name, or the AI model and the fact it was at the owner's request)
+```
+
+Keep earlier EDIT blocks. Do not silently change a published runbook, including redactions. Rewriting git history to remove a value needs the owner's explicit approval; even then, keep the EDIT block so readers can see that the content was changed after an audit.

@@ -4,6 +4,14 @@
 **Status:** Completed  
 **Platform:** macOS
 
+*EDIT*
+
+Date: - 2026-11-01
+
+Edited what: - Replaced the recipient email address (3 occurrences: the Recipient line, the JSON example, and the delivery-confirmation sentence) with `<RECIPIENT_EMAIL>` after a post-push exposure audit. Commands, results, and all other content are unchanged.
+
+Edited by: - Claude Haiku 5.5 (AI assistant), at the owner's request.
+
 ---
 
 ## 1. Summary
@@ -28,7 +36,7 @@ The Resend email integration for Hermes Agent is fully complete and verified end
 - **Resend API:** `https://api.resend.com/emails`
 - **Auth variable:** `RESEND_API_KEY` (confirmed present in Hermes runtime; value never read, printed, or committed)
 - **Sender domain:** `onboarding@resend.dev` (Resend shared test domain — no custom domain verification needed)
-- **Recipient:** `wafi.supri@gmail.com`
+- **Recipient:** `<RECIPIENT_EMAIL>`
 
 ---
 
@@ -177,7 +185,7 @@ curl -s -X POST https://api.resend.com/emails \
   -H "Content-Type: application/json" \
   -d '{
     "from": "onboarding@resend.dev",
-    "to": "wafi.supri@gmail.com",
+    "to": "<RECIPIENT_EMAIL>",
     "subject": "Hermes Resend Test — Live Email from This Session",
     "html": "<h2>Hermes Resend Test Email</h2>..."
   }'
@@ -207,7 +215,7 @@ The email ID `01a0f2ae-e2d9-76fd-8c38-c893bf77439b` is safe to document (it is a
 
 ## 17. Confirmed Delivery
 
-The recipient (`wafi.supri@gmail.com`) explicitly confirmed receipt of the email. The complete verified chain:
+The recipient (`<RECIPIENT_EMAIL>`) explicitly confirmed receipt of the email. The complete verified chain:
 
 ```text
 Hermes runtime → RESEND_API_KEY → Resend REST API → accepted by Resend → delivered → recipient confirmed receipt
