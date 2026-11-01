@@ -383,6 +383,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-11-01</td>
+      <td><a href="cross-platform/2026-11-01-post-push-exposure-audit-redaction.md">Post-push exposure audit and redaction with an EDIT record — tree and commit audit found no credentials, a personal email was replaced with a placeholder and recorded, and history rewrite is deferred for owner approval</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-09-04</td>
       <td><a href="cross-platform/universal-ai-cli-gateway-launcher-2026-09-04.md">Universal AI CLI Gateway Launcher — CLI × gateway selection with native /model control</a></td>
       <td style="white-space: nowrap;">Partial / v0.5.2 hardening verified</td>

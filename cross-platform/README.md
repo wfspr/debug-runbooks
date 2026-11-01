@@ -2,6 +2,7 @@
 
 | Runbook | Date | Status |
 |---|---|---|
+| [2026-11-01-post-push-exposure-audit-redaction.md](2026-11-01-post-push-exposure-audit-redaction.md) | 2026-11-01 | Fixed / Verified; follow-up items remain — personal email replaced with placeholder and recorded; history rewrite deferred |
 | [universal-ai-cli-gateway-launcher-2026-09-04.md](universal-ai-cli-gateway-launcher-2026-09-04.md) | 2026-09-04 | Partial — v0.5.2 policy-guard hardening verified |
 | [local-memory-mcp-setup-runbook.md](local-memory-mcp-setup-runbook.md) | 2026-08-23 | Fixed — configured on Windows & macOS |
 
