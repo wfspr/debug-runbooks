@@ -6,6 +6,8 @@
 
 **Platform:** Windows
 
+**Authored with:** Anthropic Claude desktop app, Claude Haiku 5.5 (medium effort)
+
 ---
 
 ## 1. Summary
