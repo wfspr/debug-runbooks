@@ -13,6 +13,14 @@ The Codex/Ollama runbook documents an unsupported legacy profile during desktop 
 
 The 2026-10-21 runbook covers the OmniRoute 3.8.49 to 3.8.52 global npm upgrade that failed on Windows 11 with `EBUSY` / `errno -4082` because npm could not rename the install directory while OmniRoute was still running as a PM2-managed process. It records the failed elevation retry, the reason a Windows file lock survives elevation, the stop-install-restart-save recovery, the read-only npm configuration, package origin, install-script, secret-exposure and least-privilege audit, and the open follow-up items: unreproduced peer-dependency warnings, unidentified blocked install scripts, a malformed `allow-scripts` allowlist, untested provider request functionality, plaintext credentials and `0.0.0.0` dashboard bindings.
 
+## Hermes multi-profile recovery
+
+| Date | Runbook | Status |
+| --- | --- | --- |
+| 2026-11-01 | [Hermes multi-profile Telegram recovery after v0.22.5 update](2026-11-01-hermes-multiprofile-telegram-recovery.md) | Fixed / Verified; follow-up items remain |
+
+The runbook covers an interrupted Hermes update that stopped the gateway, Telegram and Photon credentials shared across `default`, `coder`, and `news`, and enabling `gateway.multiplex_profiles`. Each profile now has its own Telegram bot and all three were verified replying. WhatsApp and Email were disabled; Email basic authentication remains unresolved.
+
 ## PM2 dual-router setup
 
 | Date | Runbook | Status |

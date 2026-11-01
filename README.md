@@ -318,6 +318,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-11-01</td>
+      <td><a href="windows/2026-11-01-hermes-multiprofile-telegram-recovery.md">Hermes multi-profile Telegram recovery after v0.22.5 update — one Telegram bot per profile, shared Photon credentials removed, multiplexing enabled, WhatsApp and Email disabled; all three bots verified replying</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-10-21</td>
       <td><a href="windows/2026-10-21-codex-desktop-ollama-restore-openai-catalog.md">Codex desktop and Ollama restoration recovered native OpenAI models — removed an unsupported legacy profile, then restored the native model selector with <code>ollama launch codex-app --restore</code> after closing both desktop apps; service health and request routing remain unverified</a></td>
       <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
