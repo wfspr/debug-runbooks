@@ -73,3 +73,45 @@ npm run build          # activity data + static build + output secret/path scan
 - Colours come only from `site/src/styles/tokens.css`; see `docs/brand/brand-guidelines.md`.
 - Deployment (Cloudflare Workers static assets) is documented in `docs/deployment.md`.
 - New runbook status wording must be recognised by `site/src/lib/status.ts`; `npm test` fails otherwise.
+
+## Post-commit and post-push exposure audit
+
+Run this every time a commit is made or pushed, and report the result to the user. Do not treat a clean script run as proof on its own: review every hit.
+
+Before commit:
+
+```bash
+git diff --check
+scripts/audit-exposure.sh staged
+git diff --cached --stat
+```
+
+Check the staged diff by hand for API keys, bot tokens, passwords, OAuth or session tokens, private keys, cookies, email addresses, phone numbers, chat or account IDs, and full home-directory usernames. Replace each value with a placeholder such as `<TELEGRAM_BOT_TOKEN>`, `<USER>`, or `<EMAIL>`.
+
+After commit, before push:
+
+```bash
+scripts/audit-exposure.sh range origin/main..HEAD
+git log -1 --format='author: %ae%ncommitter: %ce'
+```
+
+Check that the author and committer addresses are intended. Each commit's author email is public on GitHub, and changing it later rewrites history.
+
+After push:
+
+```bash
+git fetch origin main
+git rev-parse HEAD origin/main
+scripts/audit-exposure.sh tree
+```
+
+The local and remote heads must match. The tree scan must report no new hits compared with the previous run.
+
+Interpreting results:
+
+- The script prints rule names, counts, and file paths. It never prints matched values. Open each location and judge it.
+- Prose can match loose rules (for example "token sync"). Record such hits as reviewed, not as clean.
+- `email-address` hits on published content are not automatically errors, but they are exposure. Report them and let the owner decide whether to redact.
+- A real credential found in any commit is a stop condition: do not push further, tell the user, and do not delete the line alone. Rotate or revoke the credential first. Rewriting history needs the owner's approval.
+
+Report to the user in one short block: commit hash, scan results per rule, and anything found and left unchanged.
