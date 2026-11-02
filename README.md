@@ -88,6 +88,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-11-02</td>
+      <td><a href="macos/openclaw-openrouter-401-launchagent-keychain-2026-11-02.md">OpenClaw OpenRouter 401 under a LaunchAgent — gateway ignored the renewed key (no ~/.zshrc, CLI vs gateway key mismatch), negative OpenRouter balance, stale Telegram session model, and agent model object without fallbacks; fixed via Keychain, launchctl unsetenv/kickstart, /new + /model openrouter/free, then OpenRouter key SecretRef migration</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; plaintext-credential cleanup partial</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-10-22</td>
       <td><a href="macos/openclaw-telegram-gh-cli-exec-allowlist-2026-10-22.md">OpenClaw × Telegram × GitHub CLI execution allowlist recovery</a></td>
       <td style="white-space: nowrap;">Fixed / Verified</td>

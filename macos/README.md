@@ -56,6 +56,7 @@ The October recovery now avoids broad proxy-process kill patterns. The earlier [
 
 | Date | Runbook | Status |
 | --- | --- | --- |
+| 2026-11-02 | [OpenClaw OpenRouter 401 under a LaunchAgent — gateway ignored the renewed key (no ~/.zshrc, CLI vs gateway key mismatch), negative OpenRouter balance, stale Telegram session model, and agent model object without fallbacks; fixed via Keychain, launchctl unsetenv/kickstart, /new + /model openrouter/free, then OpenRouter key SecretRef migration](openclaw-openrouter-401-launchagent-keychain-2026-11-02.md) | Fixed / Verified; plaintext-credential cleanup partial |
 | 2026-10-22 | [OpenClaw × Telegram × GitHub CLI execution allowlist recovery](openclaw-telegram-gh-cli-exec-allowlist-2026-10-22.md) | Fixed / Verified |
 | 2026-09-30 | [OpenClaw Update Recovery — 2026.9.6 rollout, stale triage process, and shell PATH cleanup](openclaw-update-recovery-2026-09-30.md) | Fixed / Verified; provider-model, secrets, and dead-letter cleanup remain follow-up |
 | 2026-09-27 | [OpenClaude Plugin/MCP Cleanup](openclaude-plugin-mcp-cleanup-2026-09-27.md) | Fixed |
