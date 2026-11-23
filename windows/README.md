@@ -6,8 +6,11 @@ The [root README](../README.md#windows) contains the complete dated Windows inde
 
 | Date | Runbook | Status |
 | --- | --- | --- |
+| 2026-11-23 | [9Router npm `EBUSY` update: lessons beyond stopping PM2](2026-11-23-9router-ebusy-lessons-beyond-pm2-stop.md) | Fixed / Verified; follow-up items remain |
 | 2026-10-21 | [Codex desktop and Ollama restoration recovered native OpenAI models](2026-10-21-codex-desktop-ollama-restore-openai-catalog.md) | Fixed / Verified; follow-up items remain |
 | 2026-10-21 | [OmniRoute npm `EBUSY` upgrade failure under PM2](2026-10-21-omniroute-npm-ebusy-pm2-update-recovery.md) | Fixed / Verified; follow-up items remain |
+
+The 2026-11-23 runbook is lessons-only and builds on the OmniRoute `EBUSY` runbook: `pm2 stop all` reported every app stopped but npm still hit `EBUSY` on `9router\app`; the install succeeded once a `node.exe` scan confirmed no 9Router process remained. It also records the npm-blocked `postinstall` script (reviewed, left blocked) and an `EADDRINUSE` log on `20128` traced by PID to OmniRoute. Routed requests, the `20138` listener visibility and the helper scripts remain unverified.
 
 The Codex/Ollama runbook documents an unsupported legacy profile during desktop migration, model-catalog troubleshooting that did not resolve the Ollama-only selector, successful `ollama launch codex-app --restore` recovery after closing both desktop apps, and a separate missing-description warning for a subagent. Service health, request routing, MCP, and custom subagent execution remain unverified.
 

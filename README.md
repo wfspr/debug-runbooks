@@ -323,6 +323,11 @@ The shortest reliable diagnostic and recovery procedure.
   </thead>
   <tbody>
     <tr>
+      <td style="white-space: nowrap;">2026-11-23</td>
+      <td><a href="windows/2026-11-23-9router-ebusy-lessons-beyond-pm2-stop.md">9Router npm <code>EBUSY</code> update: lessons beyond stopping PM2 — <code>pm2 stop all</code> was not enough; installing only after a <code>node.exe</code> scan showed no 9Router process fixed it; blocked <code>postinstall</code> reviewed and left blocked; <code>EADDRINUSE</code> on 20128 traced to OmniRoute</a></td>
+      <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
+    </tr>
+    <tr>
       <td style="white-space: nowrap;">2026-11-01</td>
       <td><a href="windows/2026-11-01-hermes-multiprofile-telegram-recovery.md">Hermes multi-profile Telegram recovery after v0.22.5 update — one Telegram bot per profile, shared Photon credentials removed, multiplexing enabled, WhatsApp and Email disabled; all three bots verified replying</a></td>
       <td style="white-space: nowrap;">Fixed / Verified; follow-up items remain</td>
