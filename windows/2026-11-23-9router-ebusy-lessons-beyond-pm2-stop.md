@@ -98,7 +98,9 @@ npm install -g 9router@0.5.123   # EBUSY on 9router\app
 
 ## 6. Final Fix
 
-Stop the apps, confirm that no `node.exe` process references 9Router, and only then install. The check takes the place of trusting `pm2 list`. It also adds a few seconds, which gives any lingering child process time to exit.
+Stop 9Router, confirm that no `node.exe` process references 9Router, and only then install. The check takes the place of trusting `pm2 list`. It also adds a few seconds, which gives any lingering child process time to exit.
+
+On 2026-11-23 the recorded run used `pm2 stop all` / `pm2 start all`, which also stopped OmniRoute and Hermes. The commands below are scoped to `9router` only, as CONTRIBUTING.md requires. That scoped form was **not** run on this date. Keep the process check: it is what made the install succeed.
 
 The npm-blocked `postinstall` script (`hooks/postinstall.js`) was read and left blocked. It only pre-warms the SQLite and tray runtimes into `~/.9router/runtime`, it treats failure as non-fatal, and its own comment says the CLI fetches whatever is missing at runtime. The helper files it calls (`sqliteRuntime.js`, `trayRuntime.js`) were **not** reviewed.
 
@@ -108,10 +110,10 @@ The npm-blocked `postinstall` script (`hooks/postinstall.js`) was read and left 
 
 PowerShell 7, any working directory, normal (non-elevated) user shell.
 
-Stop all PM2 apps and look for leftover 9Router processes:
+Stop only 9Router and look for leftover 9Router processes (scoped form, not run on 2026-11-23):
 
 ```powershell
-pm2 stop all
+pm2 stop 9router
 Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object { $_.CommandLine -match '9router' } | Format-List ProcessId, CommandLine
 ```
 
@@ -128,11 +130,13 @@ npm install -g 9router@<VERSION>
 npm list -g 9router
 ```
 
-Start the apps again:
+Start 9Router again:
 
 ```powershell
-pm2 start all
+pm2 start 9router
 ```
+
+Do not run `pm2 start all` while 9Router should stay stopped. On an earlier update, starting all apps brought 9Router back and recreated the lock.
 
 Review the blocked `postinstall` script before deciding whether to allow it:
 
@@ -143,9 +147,9 @@ Get-Content "$env:APPDATA\npm\node_modules\9router\hooks\postinstall.js"
 Only if a reviewed script is needed, allow it for this one install (not used on 2026-11-23):
 
 ```powershell
-pm2 stop all
+pm2 stop 9router
 npm install -g 9router@<VERSION> --allow-scripts=9router
-pm2 start all
+pm2 start 9router
 ```
 
 Identify who owns each router port:
@@ -180,7 +184,7 @@ npm list -g 9router
 `-- 9router@0.5.123
 ```
 
-`pm2 start all` → `9router`, `hermes-agent` and `omniroute` all `online`. The newest `9router-out.log` entry reads `🚀 9router v0.5.123` and `Server: http://localhost:20138`.
+`pm2 start all` (the recorded, unscoped command) → `9router`, `hermes-agent` and `omniroute` all `online`. The newest `9router-out.log` entry reads `🚀 9router v0.5.123` and `Server: http://localhost:20138`.
 
 Port ownership:
 
@@ -224,11 +228,23 @@ Not verified:
 
 ## 10. Optional Cleanup
 
-- Clear the old `EADDRINUSE` lines so the next failure is easy to read (not run yet):
+- Clearing the 9Router logs: defer this until the follow-ups below are verified. The logs are the only record of when the `EADDRINUSE` on `20128` happened. `pm2 flush 9router` empties the application's whole current logs, not just the old lines. Archive both logs first (not run yet):
+
+```powershell
+$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+$dest = "$env:USERPROFILE\.pm2\logs\archive-$stamp"
+New-Item -ItemType Directory -Path $dest | Out-Null
+Copy-Item "$env:USERPROFILE\.pm2\logs\9router-out.log", "$env:USERPROFILE\.pm2\logs\9router-error.log" -Destination $dest
+Get-ChildItem $dest
+```
+
+Only after both copies are listed and verification is complete:
 
 ```powershell
 pm2 flush 9router
 ```
+
+To recover, open the archived files in `$dest`. Treat the archive as potentially sensitive, as PM2 logs can include request details.
 
 - Follow-ups still open:
   - Review `hooks/sqliteRuntime.js` and `hooks/trayRuntime.js` before ever allowing the `postinstall` script.
@@ -243,19 +259,19 @@ pm2 flush 9router
 Minimal diagnostics:
 
 ```powershell
-pm2 list
+pm2 describe 9router
 Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object { $_.CommandLine -match '9router' } | Format-List ProcessId, CommandLine
 ```
 
-Shortest recovery:
+Shortest recovery (scoped to 9Router; the scoped stop and start were not run on 2026-11-23, the recorded run used `all`):
 
 ```powershell
-pm2 stop all
+pm2 stop 9router
 Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object { $_.CommandLine -match '9router' } | Format-List ProcessId, CommandLine
 npm install -g 9router@<VERSION>
 npm list -g 9router
-pm2 start all
+pm2 start 9router
 curl.exe -s -o NUL -w "%{http_code}`n" http://localhost:20138
 ```
 
-Run the install only after the process check prints nothing. If `EBUSY` persists with no process listed, close any terminal, Explorer or editor window open inside `node_modules\9router`, then retry.
+Run the install only after the process check prints nothing. If the scoped stop does not free the folder, fall back to the recorded `pm2 stop all` / `pm2 start all`, which also interrupts OmniRoute and Hermes. If `EBUSY` persists with no process listed, close any terminal, Explorer or editor window open inside `node_modules\9router`, then retry.
