@@ -228,7 +228,7 @@ Not verified:
 
 ## 10. Optional Cleanup
 
-- Clearing the 9Router logs: defer this until the follow-ups below are verified. The logs are the only record of when the `EADDRINUSE` on `20128` happened. `pm2 flush 9router` empties the application's whole current logs, not just the old lines. Archive both logs first (not run yet):
+- Clearing the 9Router logs: on 2026-11-23 at 23:22 `pm2 flush 9router` was run **without an archive** (output: `Logs flushed` for `9router-out.log` and `9router-error.log`). The record of when the `EADDRINUSE` on `20128` happened is therefore gone. If the error comes back, the fresh logs will date it. Next time, defer the flush until the follow-ups are verified, because `pm2 flush 9router` empties the application's whole current logs, not just the old lines. Archive both logs first:
 
 ```powershell
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
